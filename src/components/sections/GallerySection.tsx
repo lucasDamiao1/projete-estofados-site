@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { InstagramIcon } from "@/components/ui/BrandIcon";
+import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
-import { links } from "@/constants/links";
 import { gallery } from "@/data/gallery";
 import { cn } from "@/lib/utils";
 
@@ -71,19 +71,17 @@ export function GallerySection() {
           className="mt-10 flex flex-col items-center justify-center gap-5 text-center"
         >
           <p className="max-w-lg text-sm leading-7 text-muted">
-            Quer ver mais modelos, acabamentos e inspirações? Acompanhe nosso
-            Instagram.
+            Quer ver mais modelos, acabamentos e inspirações? Acesse nosso
+            catálogo.
           </p>
           <Button asChild variant="secondary">
-            <a
-              href={links.instagram}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Acompanhar inspirações no Instagram da Projete Estofados"
+            <Link
+              href="/catalogo"
+              aria-label="Ver catálogo de modelos e tecidos da Projete Estofados"
             >
-              <InstagramIcon className="size-4" />
-              Acompanhar no Instagram
-            </a>
+              <BookOpen className="size-4" aria-hidden="true" />
+              Catálogo
+            </Link>
           </Button>
         </Reveal>
       </Container>

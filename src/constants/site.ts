@@ -7,11 +7,11 @@ export const site = {
   description:
     "Sofás personalizados que unem conforto, elegância e acabamento impecável para transformar ambientes em Curitiba.",
   navItems: [
-    { label: "Início", href: "#inicio" },
-    { label: "Sobre", href: "#sobre" },
-    { label: "Inspirações", href: "#inspiracoes" },
-    { label: "Orçamento", href: "#orcamento" },
-    { label: "Contato", href: "#contato" },
+    { label: "Início", href: "/#inicio" },
+    { label: "Sobre", href: "/#sobre" },
+    { label: "Inspirações", href: "/#inspiracoes" },
+    { label: "Orçamento", href: "/#orcamento" },
+    { label: "Contato", href: "/#contato" },
   ] satisfies NavItem[],
   brandName: brand.name,
 };

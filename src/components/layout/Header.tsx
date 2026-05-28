@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { WhatsAppIcon } from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -11,8 +12,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-primary/10 bg-background/90 backdrop-blur-xl">
       <Container className="py-4">
         <div className="flex items-center justify-between gap-5">
-          <a
-            href="#inicio"
+          <Link
+            href="/#inicio"
             className="flex shrink-0 items-center gap-1"
             aria-label={`${brand.name} - ir para o início`}
           >
@@ -34,20 +35,20 @@ export function Header() {
                 Estofados
               </span>
             </span>
-          </a>
+          </Link>
 
           <nav
             className="hidden items-center gap-8 text-xs font-medium uppercase tracking-[0.18em] text-muted lg:flex"
             aria-label="Navegação principal"
           >
             {site.navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className="transition hover:text-primary"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -80,13 +81,13 @@ export function Header() {
           aria-label="Navegação principal mobile"
         >
           {site.navItems.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="shrink-0 transition hover:text-primary"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </Container>
