@@ -62,7 +62,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Linho texturizado",
       description:
         "Tecido com trama aparente e toque natural, ideal para composicoes leves, acolhedoras e atemporais.",
-      image: `https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?${imageParams}&w=1000`,
+      image: "/images/catalogo/tecidos/linho.webp",
       alt: "Detalhe de tecido claro com textura natural",
       tags: ["pet-friendly", "premium"],
     },
@@ -71,7 +71,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Veludo premium",
       description:
         "Acabamento macio e elegante, indicado para projetos que pedem presença visual e sensação extra de conforto.",
-      image: `https://images.unsplash.com/photo-1618220179428-22790b461013?${imageParams}&w=1000`,
+      image: "/images/catalogo/tecidos/veludo.avif",
       alt: "Estofado com acabamento sofisticado em tecido macio",
       tags: ["premium"],
     },
@@ -80,7 +80,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Boucle",
       description:
         "Textura marcante e visual contemporâneo, perfeito para destacar o sofá como peça central do ambiente.",
-      image: `https://images.unsplash.com/photo-1615529162924-f8605388461d?${imageParams}&w=1000`,
+      image: "/images/catalogo/tecidos/boucle.webp",
       alt: "Poltrona clara com tecido de textura boucle",
       tags: ["pet-friendly", "impermeavel"],
     },

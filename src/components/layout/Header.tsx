@@ -1,11 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { brand } from "@/constants/brand";
 import { links } from "@/constants/links";
 import { site } from "@/constants/site";
+
+const mobileNavRows = [
+  site.navItems.slice(0, 3),
+  site.navItems.slice(3),
+];
 
 export function Header() {
   return (
@@ -52,42 +58,76 @@ export function Header() {
             ))}
           </nav>
 
-          <Button asChild size="sm" className="hidden sm:inline-flex">
-            <a
-              href={links.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Falar com a Projete Estofados no WhatsApp"
-            >
-              <WhatsAppIcon className="size-4" />
-              Falar no WhatsApp
-            </a>
-          </Button>
+          <div className="hidden items-center gap-3 sm:flex">
+            <Button asChild size="sm" variant="secondary">
+              <Link
+                href="/catalogo"
+                aria-label="Ver catálogo da Projete Estofados"
+              >
+                <BookOpen className="size-4" aria-hidden="true" />
+                Ver catálogo
+              </Link>
+            </Button>
 
-          <Button asChild size="icon" variant="primary" className="sm:hidden">
-            <a
-              href={links.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Falar com a Projete Estofados no WhatsApp"
-            >
-              <WhatsAppIcon className="size-4" />
-            </a>
-          </Button>
+            <Button asChild size="sm">
+              <a
+                href={links.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Falar com a Projete Estofados no WhatsApp"
+              >
+                <WhatsAppIcon className="size-4" />
+                Falar no WhatsApp
+              </a>
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2 sm:hidden">
+            <Button asChild size="icon" variant="secondary">
+              <Link
+                href="/catalogo"
+                aria-label="Ver catálogo da Projete Estofados"
+              >
+                <BookOpen className="size-4" aria-hidden="true" />
+              </Link>
+            </Button>
+
+            <Button asChild size="icon" variant="primary">
+              <a
+                href={links.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Falar com a Projete Estofados no WhatsApp"
+              >
+                <WhatsAppIcon className="size-4" />
+              </a>
+            </Button>
+          </div>
         </div>
 
         <nav
-          className="mt-4 flex gap-5 overflow-x-auto pb-1 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-muted lg:hidden"
+          className="mt-4 space-y-2 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-muted lg:hidden"
           aria-label="Navegação principal mobile"
         >
-          {site.navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="shrink-0 transition hover:text-primary"
+          {mobileNavRows.map((row, index) => (
+            <div
+              key={index}
+              className={
+                index === 0
+                  ? "grid grid-cols-3 gap-3 text-center"
+                  : "flex justify-center gap-10 text-center"
+              }
             >
-              {item.label}
-            </Link>
+              {row.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="transition hover:text-primary"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </nav>
       </Container>
