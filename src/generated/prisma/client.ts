@@ -46,3 +46,23 @@ export { Prisma }
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model SiteContent
+ * 
+ */
+export type SiteContent = Prisma.SiteContentModel
+/**
+ * Model MediaFile
+ * 
+ */
+export type MediaFile = Prisma.MediaFileModel
+/**
+ * Model CatalogModel
+ * 
+ */
+export type CatalogModel = Prisma.CatalogModelModel
+/**
+ * Model CatalogFabric
+ * 
+ */
+export type CatalogFabric = Prisma.CatalogFabricModel

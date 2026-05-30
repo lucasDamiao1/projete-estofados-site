@@ -7,23 +7,54 @@ import { Section } from "@/components/ui/Section";
 import { brand } from "@/constants/brand";
 import { links } from "@/constants/links";
 
-export function ContactSection() {
+type ContactSectionProps = {
+  addressTitle?: string;
+  description?: string;
+  eyebrow?: string;
+  hoursTitle?: string;
+  primaryCta?: string;
+  secondaryCta?: string;
+  socialTitle?: string;
+  title?: string;
+};
+
+const contactDefaults = {
+  addressTitle: "Endereço",
+  description:
+    "Converse com a Projete Estofados e comece a desenhar uma peça que respeita seu ambiente, sua rotina e seu estilo.",
+  eyebrow: "Contato",
+  hoursTitle: "Horário",
+  primaryCta: "Falar com a Projete Estofados",
+  secondaryCta: "Acompanhar no Instagram",
+  socialTitle: "Redes sociais",
+  title: "Pronto para criar o sofá ideal para sua casa?",
+};
+
+export function ContactSection({
+  addressTitle = contactDefaults.addressTitle,
+  description = contactDefaults.description,
+  eyebrow = contactDefaults.eyebrow,
+  hoursTitle = contactDefaults.hoursTitle,
+  primaryCta = contactDefaults.primaryCta,
+  secondaryCta = contactDefaults.secondaryCta,
+  socialTitle = contactDefaults.socialTitle,
+  title = contactDefaults.title,
+}: ContactSectionProps) {
   return (
     <Section id="contato" className="bg-surface" aria-labelledby="contact-title">
       <Container>
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-medium uppercase tracking-[0.26em] text-accent">
-            Contato
+            {eyebrow}
           </p>
           <h2
             id="contact-title"
             className="mt-4 font-serif text-4xl font-semibold leading-tight text-primary sm:text-5xl"
           >
-            Pronto para criar o sofá ideal para sua casa?
+            {title}
           </h2>
           <p className="mt-5 text-base leading-8 text-muted">
-            Converse com a Projete Estofados e comece a desenhar uma peça que
-            respeita seu ambiente, sua rotina e seu estilo.
+            {description}
           </p>
         </Reveal>
 
@@ -39,7 +70,7 @@ export function ContactSection() {
               aria-label="Falar com a Projete Estofados pelo WhatsApp"
             >
               <WhatsAppIcon className="size-4" />
-              Falar com a Projete Estofados
+              {primaryCta}
             </a>
           </Button>
           <Button asChild variant="secondary">
@@ -50,7 +81,7 @@ export function ContactSection() {
               aria-label="Acompanhar a Projete Estofados no Instagram"
             >
               <InstagramIcon className="size-4" />
-              Acompanhar no Instagram
+              {secondaryCta}
             </a>
           </Button>
         </Reveal>
@@ -58,7 +89,9 @@ export function ContactSection() {
         <div className="mx-auto mt-14 grid max-w-5xl gap-4 md:grid-cols-3">
           <Reveal className="rounded-lg border border-primary/10 bg-background/80 p-6 shadow-soft">
             <MapPin className="size-5 text-accent" aria-hidden="true" />
-            <h3 className="mt-5 font-serif text-2xl text-primary">Endereço</h3>
+            <h3 className="mt-5 font-serif text-2xl text-primary">
+              {addressTitle}
+            </h3>
             <a
               href={links.maps}
               target="_blank"
@@ -74,7 +107,9 @@ export function ContactSection() {
             className="rounded-lg border border-primary/10 bg-background/80 p-6 shadow-soft"
           >
             <Clock className="size-5 text-accent" aria-hidden="true" />
-            <h3 className="mt-5 font-serif text-2xl text-primary">Horário</h3>
+            <h3 className="mt-5 font-serif text-2xl text-primary">
+              {hoursTitle}
+            </h3>
             <p className="mt-3 text-sm leading-7 text-muted">
               {brand.weekdayHours}
               <br />
@@ -88,7 +123,7 @@ export function ContactSection() {
           >
             <InstagramIcon className="size-5 text-accent" />
             <h3 className="mt-5 font-serif text-2xl text-primary">
-              Redes sociais
+              {socialTitle}
             </h3>
             <div className="mt-3 space-y-2 text-sm leading-7 text-muted">
               <a

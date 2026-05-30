@@ -384,7 +384,11 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  SiteContent: 'SiteContent',
+  MediaFile: 'MediaFile',
+  CatalogModel: 'CatalogModel',
+  CatalogFabric: 'CatalogFabric'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user"
+    modelProps: "user" | "siteContent" | "mediaFile" | "catalogModel" | "catalogFabric"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +482,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SiteContent: {
+      payload: Prisma.$SiteContentPayload<ExtArgs>
+      fields: Prisma.SiteContentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SiteContentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SiteContentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        findFirst: {
+          args: Prisma.SiteContentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SiteContentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        findMany: {
+          args: Prisma.SiteContentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>[]
+        }
+        create: {
+          args: Prisma.SiteContentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        createMany: {
+          args: Prisma.SiteContentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SiteContentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>[]
+        }
+        delete: {
+          args: Prisma.SiteContentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        update: {
+          args: Prisma.SiteContentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        deleteMany: {
+          args: Prisma.SiteContentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SiteContentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SiteContentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>[]
+        }
+        upsert: {
+          args: Prisma.SiteContentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SiteContentPayload>
+        }
+        aggregate: {
+          args: Prisma.SiteContentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSiteContent>
+        }
+        groupBy: {
+          args: Prisma.SiteContentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteContentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SiteContentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SiteContentCountAggregateOutputType> | number
+        }
+      }
+    }
+    MediaFile: {
+      payload: Prisma.$MediaFilePayload<ExtArgs>
+      fields: Prisma.MediaFileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MediaFileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MediaFileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        findFirst: {
+          args: Prisma.MediaFileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MediaFileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        findMany: {
+          args: Prisma.MediaFileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>[]
+        }
+        create: {
+          args: Prisma.MediaFileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        createMany: {
+          args: Prisma.MediaFileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MediaFileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>[]
+        }
+        delete: {
+          args: Prisma.MediaFileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        update: {
+          args: Prisma.MediaFileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        deleteMany: {
+          args: Prisma.MediaFileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MediaFileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MediaFileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>[]
+        }
+        upsert: {
+          args: Prisma.MediaFileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaFilePayload>
+        }
+        aggregate: {
+          args: Prisma.MediaFileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMediaFile>
+        }
+        groupBy: {
+          args: Prisma.MediaFileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaFileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MediaFileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaFileCountAggregateOutputType> | number
+        }
+      }
+    }
+    CatalogModel: {
+      payload: Prisma.$CatalogModelPayload<ExtArgs>
+      fields: Prisma.CatalogModelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CatalogModelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CatalogModelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        findFirst: {
+          args: Prisma.CatalogModelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CatalogModelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        findMany: {
+          args: Prisma.CatalogModelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>[]
+        }
+        create: {
+          args: Prisma.CatalogModelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        createMany: {
+          args: Prisma.CatalogModelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CatalogModelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>[]
+        }
+        delete: {
+          args: Prisma.CatalogModelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        update: {
+          args: Prisma.CatalogModelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        deleteMany: {
+          args: Prisma.CatalogModelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CatalogModelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CatalogModelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>[]
+        }
+        upsert: {
+          args: Prisma.CatalogModelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogModelPayload>
+        }
+        aggregate: {
+          args: Prisma.CatalogModelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCatalogModel>
+        }
+        groupBy: {
+          args: Prisma.CatalogModelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CatalogModelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CatalogModelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CatalogModelCountAggregateOutputType> | number
+        }
+      }
+    }
+    CatalogFabric: {
+      payload: Prisma.$CatalogFabricPayload<ExtArgs>
+      fields: Prisma.CatalogFabricFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CatalogFabricFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CatalogFabricFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        findFirst: {
+          args: Prisma.CatalogFabricFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CatalogFabricFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        findMany: {
+          args: Prisma.CatalogFabricFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>[]
+        }
+        create: {
+          args: Prisma.CatalogFabricCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        createMany: {
+          args: Prisma.CatalogFabricCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CatalogFabricCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>[]
+        }
+        delete: {
+          args: Prisma.CatalogFabricDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        update: {
+          args: Prisma.CatalogFabricUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        deleteMany: {
+          args: Prisma.CatalogFabricDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CatalogFabricUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CatalogFabricUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>[]
+        }
+        upsert: {
+          args: Prisma.CatalogFabricUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CatalogFabricPayload>
+        }
+        aggregate: {
+          args: Prisma.CatalogFabricAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCatalogFabric>
+        }
+        groupBy: {
+          args: Prisma.CatalogFabricGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CatalogFabricGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CatalogFabricCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CatalogFabricCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -527,6 +827,66 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SiteContentScalarFieldEnum = {
+  id: 'id',
+  section: 'section',
+  key: 'key',
+  type: 'type',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteContentScalarFieldEnum = (typeof SiteContentScalarFieldEnum)[keyof typeof SiteContentScalarFieldEnum]
+
+
+export const MediaFileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  alt: 'alt',
+  section: 'section',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaFileScalarFieldEnum = (typeof MediaFileScalarFieldEnum)[keyof typeof MediaFileScalarFieldEnum]
+
+
+export const CatalogModelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  category: 'category',
+  size: 'size',
+  fabric: 'fabric',
+  armSize: 'armSize',
+  structure: 'structure',
+  whatsappMessage: 'whatsappMessage',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CatalogModelScalarFieldEnum = (typeof CatalogModelScalarFieldEnum)[keyof typeof CatalogModelScalarFieldEnum]
+
+
+export const CatalogFabricScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  description: 'description',
+  tags: 'tags',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CatalogFabricScalarFieldEnum = (typeof CatalogFabricScalarFieldEnum)[keyof typeof CatalogFabricScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -588,6 +948,13 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -598,6 +965,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -711,6 +1092,10 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  siteContent?: Prisma.SiteContentOmit
+  mediaFile?: Prisma.MediaFileOmit
+  catalogModel?: Prisma.CatalogModelOmit
+  catalogFabric?: Prisma.CatalogFabricOmit
 }
 
 /* Types for Logging */

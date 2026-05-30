@@ -10,6 +10,22 @@ npm run lint
 npm run build
 ```
 
+## Ambiente
+
+Configure a conexao PostgreSQL do Neon usando `sslmode=verify-full` e
+`channel_binding=require`:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST/neondb?sslmode=verify-full&channel_binding=require"
+```
+
+Com `@prisma/adapter-pg`, `pg` e Neon, `sslmode=verify-full` preserva o
+comportamento seguro esperado e evita o warning sobre aliases de SSL mode.
+
+O painel administrativo usa Vercel Blob para trocar imagens editaveis. Configure
+`BLOB_READ_WRITE_TOKEN` no ambiente local e no projeto da Vercel antes de enviar
+imagens pelo admin.
+
 ## Conteúdo
 
 - Informações da marca: `src/constants/brand.ts`

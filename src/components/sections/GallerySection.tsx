@@ -7,8 +7,32 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 import { gallery } from "@/data/gallery";
 import { cn } from "@/lib/utils";
+import type { GalleryItem } from "@/types";
 
-export function GallerySection() {
+type GallerySectionProps = {
+  catalogText?: string;
+  description?: string;
+  eyebrow?: string;
+  galleryItems?: GalleryItem[];
+  title?: string;
+};
+
+const galleryDefaults = {
+  catalogText:
+    "Quer ver mais modelos, acabamentos e inspirações? Acesse nosso catálogo.",
+  description:
+    "Inspire-se em ambientes criados para unir conforto, elegância e personalidade.",
+  eyebrow: "Inspirações",
+  title: "Ambientes criados para unir conforto, elegância e personalidade",
+};
+
+export function GallerySection({
+  catalogText = galleryDefaults.catalogText,
+  description = galleryDefaults.description,
+  eyebrow = galleryDefaults.eyebrow,
+  galleryItems = gallery,
+  title = galleryDefaults.title,
+}: GallerySectionProps) {
   return (
     <Section
       id="inspiracoes"
@@ -19,26 +43,25 @@ export function GallerySection() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <Reveal>
             <p className="text-xs font-medium uppercase tracking-[0.26em] text-accent">
-              Inspirações
+              {eyebrow}
             </p>
             <h2
               id="gallery-title"
               className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight text-primary sm:text-5xl"
             >
-              Ambientes criados para unir conforto, elegância e personalidade
+              {title}
             </h2>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:justify-self-end">
             <p className="max-w-xl text-base leading-8 text-muted">
-              Inspire-se em ambientes criados para unir conforto, elegância e
-              personalidade.
+              {description}
             </p>
           </Reveal>
         </div>
 
         <div className="mt-12 grid auto-rows-[260px] gap-4 md:grid-cols-4 md:auto-rows-[220px] lg:auto-rows-[260px]">
-          {gallery.map((item, index) => (
+          {galleryItems.map((item, index) => (
             <Reveal
               key={item.title}
               delay={index * 0.05}
@@ -71,8 +94,7 @@ export function GallerySection() {
           className="mt-10 flex flex-col items-center justify-center gap-5 text-center"
         >
           <p className="max-w-lg text-sm leading-7 text-muted">
-            Quer ver mais modelos, acabamentos e inspirações? Acesse nosso
-            catálogo.
+            {catalogText}
           </p>
           <Button asChild variant="secondary">
             <Link

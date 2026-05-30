@@ -4,11 +4,16 @@ import Image from "next/image";
 import { Droplets, Gem, PawPrint } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CatalogModelCard } from "@/components/sections/CatalogModelCard";
-import { catalog, fabricTags } from "@/data/catalog";
+import { fabricTags } from "@/data/catalog";
 import { cn } from "@/lib/utils";
-import type { CatalogFabricTag } from "@/types";
+import type { CatalogFabricTag, CatalogItem, CatalogModelItem } from "@/types";
 
-type CatalogTab = keyof typeof catalog;
+type CatalogTab = "modelos" | "tecidos";
+
+type CatalogTabsProps = {
+  fabrics: CatalogItem[];
+  models: CatalogModelItem[];
+};
 
 const tabs: { id: CatalogTab; label: string }[] = [
   { id: "modelos", label: "Modelos" },
@@ -21,7 +26,7 @@ const fabricTagIcons = {
   premium: Gem,
 } satisfies Record<CatalogFabricTag, typeof PawPrint>;
 
-export function CatalogTabs() {
+export function CatalogTabs({ fabrics, models }: CatalogTabsProps) {
   const [activeTab, setActiveTab] = useState<CatalogTab>("modelos");
   const [selectedFabricTags, setSelectedFabricTags] = useState<
     CatalogFabricTag[]
@@ -29,8 +34,8 @@ export function CatalogTabs() {
 
   const filteredFabrics =
     selectedFabricTags.length === 0
-      ? catalog.tecidos
-      : catalog.tecidos.filter((fabric) =>
+      ? fabrics
+      : fabrics.filter((fabric) =>
           selectedFabricTags.every((tag) => fabric.tags.includes(tag)),
         );
 
@@ -110,11 +115,17 @@ export function CatalogTabs() {
             className="mt-8"
           >
             {isActive && tab.id === "modelos" ? (
-              <div className="grid gap-6 lg:grid-cols-2">
-                {catalog.modelos.map((model) => (
-                  <CatalogModelCard key={model.id} model={model} />
-                ))}
-              </div>
+              models.length > 0 ? (
+                <div className="grid gap-6 lg:grid-cols-2">
+                  {models.map((model) => (
+                    <CatalogModelCard key={model.id} model={model} />
+                  ))}
+                </div>
+              ) : (
+                <p className="rounded-lg bg-background p-6 text-center text-sm leading-7 text-muted shadow-soft">
+                  Nenhum modelo ativo no catalogo.
+                </p>
+              )
             ) : null}
 
             {isActive && tab.id === "tecidos" ? (
@@ -156,8 +167,8 @@ export function CatalogTabs() {
                       >
                         <div className="relative aspect-[4/3] overflow-hidden">
                           <Image
-                            src={item.image}
-                            alt={item.alt}
+                            src={item.imageUrl}
+                            alt={item.name}
                             fill
                             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
                             className="object-cover"

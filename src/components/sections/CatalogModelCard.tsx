@@ -24,8 +24,8 @@ export function CatalogModelCard({ model }: CatalogModelCardProps) {
     <article className="overflow-hidden rounded-lg bg-background shadow-soft md:grid md:grid-cols-[3fr_2fr]">
       <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-[240px]">
         <Image
-          src={model.image}
-          alt={model.alt}
+          src={model.imageUrl}
+          alt={model.name}
           fill
           sizes="(min-width: 1024px) 30vw, (min-width: 768px) 60vw, 100vw"
           className="object-cover"

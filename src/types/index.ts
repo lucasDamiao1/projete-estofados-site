@@ -21,21 +21,18 @@ export type CatalogItem = {
   id: string;
   name: string;
   description: string;
-  image: string;
-  alt: string;
+  imageUrl: string;
   tags: CatalogFabricTag[];
 };
 
 export type CatalogModelItem = {
   id: string;
   name: string;
-  image: string;
-  alt: string;
+  imageUrl: string;
   category: string;
   size: string;
   fabric: string;
   armSize: string;
   structure: string;
-  description: string;
   whatsappMessage: string;
 };

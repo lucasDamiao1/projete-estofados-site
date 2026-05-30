@@ -17,10 +17,7 @@ const catalogModels: CatalogModelItem[] = [
       fabric: "Linho texturizado",
       armSize: "Braço de 18 cm",
       structure: "Fixo",
-      description:
-        "Modelo versátil para salas integradas, com composição ajustável e proporções pensadas para receber com conforto.",
-      image: `https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?${imageParams}&w=1000`,
-      alt: "Sofá modular claro em sala contemporânea",
+      imageUrl: `https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?${imageParams}&w=1000`,
       whatsappMessage:
         "Olá! Tenho interesse no modelo Sofá modular. Gostaria de mais informações sobre medidas, tecidos e orçamento.",
     },
@@ -32,10 +29,7 @@ const catalogModels: CatalogModelItem[] = [
       fabric: "Veludo premium",
       armSize: "Braço de 20 cm",
       structure: "Retrátil",
-      description:
-        "Opção indicada para quem prioriza descanso no dia a dia, com assento amplo e visual elegante para ambientes familiares.",
-      image: `https://images.unsplash.com/photo-1555041469-a586c61ea9bc?${imageParams}&w=1000`,
-      alt: "Sofá retrátil em tecido claro com almofadas",
+      imageUrl: `https://images.unsplash.com/photo-1555041469-a586c61ea9bc?${imageParams}&w=1000`,
       whatsappMessage:
         "Olá! Tenho interesse no modelo Sofá retrátil. Gostaria de mais informações sobre medidas, tecidos e orçamento.",
     },
@@ -47,10 +41,7 @@ const catalogModels: CatalogModelItem[] = [
       fabric: "Boucle",
       armSize: "Braço de 16 cm",
       structure: "Fixo com chaise",
-      description:
-        "Formato alongado para criar uma área de relaxamento, mantendo acabamento refinado e medidas adaptadas ao projeto.",
-      image: `https://images.unsplash.com/photo-1618220179428-22790b461013?${imageParams}&w=1000`,
-      alt: "Sofá com chaise em ambiente sofisticado",
+      imageUrl: `https://images.unsplash.com/photo-1618220179428-22790b461013?${imageParams}&w=1000`,
       whatsappMessage:
         "Olá! Tenho interesse no modelo Chaise sob medida. Gostaria de mais informações sobre medidas, tecidos e orçamento.",
     },
@@ -62,8 +53,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Linho texturizado",
       description:
         "Tecido com trama aparente e toque natural, ideal para composicoes leves, acolhedoras e atemporais.",
-      image: "/images/catalogo/tecidos/linho.webp",
-      alt: "Detalhe de tecido claro com textura natural",
+      imageUrl: "/images/catalogo/tecidos/linho.webp",
       tags: ["pet-friendly", "premium"],
     },
     {
@@ -71,8 +61,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Veludo premium",
       description:
         "Acabamento macio e elegante, indicado para projetos que pedem presença visual e sensação extra de conforto.",
-      image: "/images/catalogo/tecidos/veludo.avif",
-      alt: "Estofado com acabamento sofisticado em tecido macio",
+      imageUrl: "/images/catalogo/tecidos/veludo.avif",
       tags: ["premium"],
     },
     {
@@ -80,8 +69,7 @@ const catalogFabrics: CatalogItem[] = [
       name: "Boucle",
       description:
         "Textura marcante e visual contemporâneo, perfeito para destacar o sofá como peça central do ambiente.",
-      image: "/images/catalogo/tecidos/boucle.webp",
-      alt: "Poltrona clara com tecido de textura boucle",
+      imageUrl: "/images/catalogo/tecidos/boucle.webp",
       tags: ["pet-friendly", "impermeavel"],
     },
   ];

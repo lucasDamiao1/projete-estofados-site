@@ -51,7 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  SiteContent: 'SiteContent',
+  MediaFile: 'MediaFile',
+  CatalogModel: 'CatalogModel',
+  CatalogFabric: 'CatalogFabric'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,6 +84,66 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SiteContentScalarFieldEnum = {
+  id: 'id',
+  section: 'section',
+  key: 'key',
+  type: 'type',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteContentScalarFieldEnum = (typeof SiteContentScalarFieldEnum)[keyof typeof SiteContentScalarFieldEnum]
+
+
+export const MediaFileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  alt: 'alt',
+  section: 'section',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaFileScalarFieldEnum = (typeof MediaFileScalarFieldEnum)[keyof typeof MediaFileScalarFieldEnum]
+
+
+export const CatalogModelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  category: 'category',
+  size: 'size',
+  fabric: 'fabric',
+  armSize: 'armSize',
+  structure: 'structure',
+  whatsappMessage: 'whatsappMessage',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CatalogModelScalarFieldEnum = (typeof CatalogModelScalarFieldEnum)[keyof typeof CatalogModelScalarFieldEnum]
+
+
+export const CatalogFabricScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  description: 'description',
+  tags: 'tags',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CatalogFabricScalarFieldEnum = (typeof CatalogFabricScalarFieldEnum)[keyof typeof CatalogFabricScalarFieldEnum]
 
 
 export const SortOrder = {

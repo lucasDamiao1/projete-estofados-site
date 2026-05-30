@@ -9,4 +9,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/SiteContent'
+export type * from './models/MediaFile'
+export type * from './models/CatalogModel'
+export type * from './models/CatalogFabric'
 export type * from './commonInputTypes'
