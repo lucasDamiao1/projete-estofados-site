@@ -14,7 +14,13 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const [contents, catalogModels, catalogFabrics] = await Promise.all([
+  const [
+    contents,
+    catalogModels,
+    catalogFabrics,
+    users,
+    whatsappClickCount,
+  ] = await Promise.all([
     prisma.siteContent.findMany({
       orderBy: [{ section: "asc" }, { key: "asc" }],
       select: {
@@ -53,13 +59,28 @@ export default async function AdminDashboardPage() {
         sortOrder: true,
       },
     }),
+    prisma.user.findMany({
+      orderBy: [{ createdAt: "desc" }, { email: "asc" }],
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    }),
+    prisma.whatsappClick.count(),
   ]);
 
   return (
-    <AdminEditorLayout
-      catalogFabrics={catalogFabrics}
-      catalogModels={catalogModels}
-      contents={contents}
+      <AdminEditorLayout
+        catalogFabrics={catalogFabrics}
+        catalogModels={catalogModels}
+        contents={contents}
+      users={users.map((user) => ({
+        ...user,
+        createdAt: user.createdAt.toISOString(),
+      }))}
+      whatsappClickCount={whatsappClickCount}
       userEmail={session.user.email}
     />
   );

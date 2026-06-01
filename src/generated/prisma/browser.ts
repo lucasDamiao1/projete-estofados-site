@@ -42,3 +42,8 @@ export type CatalogModel = Prisma.CatalogModelModel
  * 
  */
 export type CatalogFabric = Prisma.CatalogFabricModel
+/**
+ * Model WhatsappClick
+ * 
+ */
+export type WhatsappClick = Prisma.WhatsappClickModel

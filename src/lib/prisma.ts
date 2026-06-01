@@ -20,7 +20,9 @@ function createPrismaClient() {
 const cachedPrisma = globalForPrisma.prisma;
 
 export const prisma =
-  cachedPrisma?.catalogModel && cachedPrisma.catalogFabric
+  cachedPrisma?.catalogModel &&
+  cachedPrisma.catalogFabric &&
+  cachedPrisma.whatsappClick
     ? cachedPrisma
     : createPrismaClient();
 

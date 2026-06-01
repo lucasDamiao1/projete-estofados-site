@@ -72,3 +72,13 @@ model CatalogFabric {
 
   @@index([active, sortOrder])
 }
+
+model WhatsappClick {
+  id        String   @id @default(cuid())
+  source    String
+  label     String
+  createdAt DateTime @default(now())
+
+  @@index([source])
+  @@index([createdAt])
+}

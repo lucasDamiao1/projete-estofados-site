@@ -388,7 +388,8 @@ export const ModelName = {
   SiteContent: 'SiteContent',
   MediaFile: 'MediaFile',
   CatalogModel: 'CatalogModel',
-  CatalogFabric: 'CatalogFabric'
+  CatalogFabric: 'CatalogFabric',
+  WhatsappClick: 'WhatsappClick'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "siteContent" | "mediaFile" | "catalogModel" | "catalogFabric"
+    modelProps: "user" | "siteContent" | "mediaFile" | "catalogModel" | "catalogFabric" | "whatsappClick"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WhatsappClick: {
+      payload: Prisma.$WhatsappClickPayload<ExtArgs>
+      fields: Prisma.WhatsappClickFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WhatsappClickFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WhatsappClickFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        findFirst: {
+          args: Prisma.WhatsappClickFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WhatsappClickFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        findMany: {
+          args: Prisma.WhatsappClickFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>[]
+        }
+        create: {
+          args: Prisma.WhatsappClickCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        createMany: {
+          args: Prisma.WhatsappClickCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WhatsappClickCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>[]
+        }
+        delete: {
+          args: Prisma.WhatsappClickDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        update: {
+          args: Prisma.WhatsappClickUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        deleteMany: {
+          args: Prisma.WhatsappClickDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WhatsappClickUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WhatsappClickUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>[]
+        }
+        upsert: {
+          args: Prisma.WhatsappClickUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappClickPayload>
+        }
+        aggregate: {
+          args: Prisma.WhatsappClickAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWhatsappClick>
+        }
+        groupBy: {
+          args: Prisma.WhatsappClickGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WhatsappClickGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WhatsappClickCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WhatsappClickCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -887,6 +962,16 @@ export const CatalogFabricScalarFieldEnum = {
 } as const
 
 export type CatalogFabricScalarFieldEnum = (typeof CatalogFabricScalarFieldEnum)[keyof typeof CatalogFabricScalarFieldEnum]
+
+
+export const WhatsappClickScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  label: 'label',
+  createdAt: 'createdAt'
+} as const
+
+export type WhatsappClickScalarFieldEnum = (typeof WhatsappClickScalarFieldEnum)[keyof typeof WhatsappClickScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1096,6 +1181,7 @@ export type GlobalOmitConfig = {
   mediaFile?: Prisma.MediaFileOmit
   catalogModel?: Prisma.CatalogModelOmit
   catalogFabric?: Prisma.CatalogFabricOmit
+  whatsappClick?: Prisma.WhatsappClickOmit
 }
 
 /* Types for Logging */
