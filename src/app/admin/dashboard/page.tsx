@@ -14,72 +14,64 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const [
-    contents,
-    catalogModels,
-    catalogFabrics,
-    users,
-    whatsappClickCount,
-  ] = await Promise.all([
-    prisma.siteContent.findMany({
-      orderBy: [{ section: "asc" }, { key: "asc" }],
-      select: {
-        id: true,
-        section: true,
-        key: true,
-        type: true,
-        value: true,
-      },
-    }),
-    prisma.catalogModel.findMany({
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-      select: {
-        id: true,
-        name: true,
-        imageUrl: true,
-        category: true,
-        size: true,
-        fabric: true,
-        armSize: true,
-        structure: true,
-        whatsappMessage: true,
-        active: true,
-        sortOrder: true,
-      },
-    }),
-    prisma.catalogFabric.findMany({
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-      select: {
-        id: true,
-        name: true,
-        imageUrl: true,
-        description: true,
-        tags: true,
-        active: true,
-        sortOrder: true,
-      },
-    }),
-    prisma.user.findMany({
-      orderBy: [{ createdAt: "desc" }, { email: "asc" }],
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        createdAt: true,
-      },
-    }),
-    prisma.whatsappClick.count(),
-  ]);
+  const [contents, catalogModels, catalogFabrics, catalogFabricTags, whatsappClickCount] =
+    await Promise.all([
+      prisma.siteContent.findMany({
+        orderBy: [{ section: "asc" }, { key: "asc" }],
+        select: {
+          id: true,
+          section: true,
+          key: true,
+          type: true,
+          value: true,
+        },
+      }),
+      prisma.catalogModel.findMany({
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          category: true,
+          size: true,
+          fabric: true,
+          armSize: true,
+          structure: true,
+          whatsappMessage: true,
+          active: true,
+          sortOrder: true,
+        },
+      }),
+      prisma.catalogFabric.findMany({
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          description: true,
+          tags: true,
+          active: true,
+          sortOrder: true,
+        },
+      }),
+      prisma.catalogFabricTag.findMany({
+        orderBy: [{ sortOrder: "asc" }, { label: "asc" }],
+        select: {
+          id: true,
+          label: true,
+          icon: true,
+          sortOrder: true,
+        },
+      }),
+      prisma.whatsappClick.count(),
+    ]);
 
   return (
-      <AdminEditorLayout
-        catalogFabrics={catalogFabrics}
-        catalogModels={catalogModels}
-        contents={contents}
-      users={users.map((user) => ({
-        ...user,
-        createdAt: user.createdAt.toISOString(),
-      }))}
+    <AdminEditorLayout
+      catalogFabrics={catalogFabrics}
+      catalogFabricTags={catalogFabricTags}
+      catalogModels={catalogModels}
+      contents={contents}
       whatsappClickCount={whatsappClickCount}
       userEmail={session.user.email}
     />

@@ -4,9 +4,9 @@ import { Header } from "@/components/layout/Header";
 import { CatalogTabs } from "@/components/sections/CatalogTabs";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { catalog } from "@/data/catalog";
+import { catalog, fabricTags as fallbackFabricTags } from "@/data/catalog";
 import { prisma } from "@/lib/prisma";
-import type { CatalogFabricTag } from "@/types";
+import type { CatalogFabricTag, CatalogFabricTagItem } from "@/types";
 
 export const metadata: Metadata = {
   title: "Catálogo",
@@ -16,13 +16,12 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const validFabricTags = new Set<CatalogFabricTag>([
-  "pet-friendly",
-  "impermeavel",
-  "premium",
-]);
+function parseFabricTags(
+  tags: string,
+  availableTags: CatalogFabricTagItem[],
+): CatalogFabricTag[] {
+  const validFabricTags = new Set(availableTags.map((tag) => tag.id));
 
-function parseFabricTags(tags: string): CatalogFabricTag[] {
   return tags
     .split(",")
     .map((tag) => tag.trim())
@@ -32,7 +31,7 @@ function parseFabricTags(tags: string): CatalogFabricTag[] {
 }
 
 export default async function CatalogPage() {
-  const [models, fabrics] = await Promise.all([
+  const [models, fabrics, fabricTags] = await Promise.all([
     prisma.catalogModel.findMany({
       where: {
         active: true,
@@ -63,13 +62,22 @@ export default async function CatalogPage() {
         tags: true,
       },
     }),
+    prisma.catalogFabricTag.findMany({
+      orderBy: [{ sortOrder: "asc" }, { label: "asc" }],
+      select: {
+        id: true,
+        label: true,
+        icon: true,
+      },
+    }),
   ]);
   const catalogModels = models.length > 0 ? models : catalog.modelos;
+  const availableFabricTags = fabricTags.length > 0 ? fabricTags : fallbackFabricTags;
   const catalogFabrics =
     fabrics.length > 0
       ? fabrics.map((fabric) => ({
           ...fabric,
-          tags: parseFabricTags(fabric.tags),
+          tags: parseFabricTags(fabric.tags, availableFabricTags),
         }))
       : catalog.tecidos;
 
@@ -93,6 +101,7 @@ export default async function CatalogPage() {
 
             <CatalogTabs
               fabrics={catalogFabrics}
+              fabricTags={availableFabricTags}
               models={catalogModels}
             />
           </Container>

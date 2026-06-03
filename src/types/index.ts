@@ -15,7 +15,13 @@ export type GalleryItem = {
   orientation: "portrait" | "landscape";
 };
 
-export type CatalogFabricTag = "pet-friendly" | "impermeavel" | "premium";
+export type CatalogFabricTag = string;
+
+export type CatalogFabricTagItem = {
+  id: CatalogFabricTag;
+  label: string;
+  icon: string;
+};
 
 export type CatalogItem = {
   id: string;

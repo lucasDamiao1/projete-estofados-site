@@ -22,6 +22,7 @@ const cachedPrisma = globalForPrisma.prisma;
 export const prisma =
   cachedPrisma?.catalogModel &&
   cachedPrisma.catalogFabric &&
+  cachedPrisma.catalogFabricTag &&
   cachedPrisma.whatsappClick
     ? cachedPrisma
     : createPrismaClient();

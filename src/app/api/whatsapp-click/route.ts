@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
   if (!parsedData.success) {
     return NextResponse.json(
-      { error: "Parametros invalidos para registrar o clique." },
+      { error: "Parâmetros inválidos para registrar o clique." },
       { status: 400 },
     );
   }
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
   if (!redirectUrl) {
     return NextResponse.json(
-      { error: "URL de WhatsApp nao permitida." },
+      { error: "URL de WhatsApp não permitida." },
       { status: 400 },
     );
   }

@@ -1,12 +1,12 @@
-import type { CatalogFabricTag, CatalogItem, CatalogModelItem } from "@/types";
+import type { CatalogFabricTagItem, CatalogItem, CatalogModelItem } from "@/types";
 
 const imageParams = "auto=format&fit=crop&q=82";
 
 export const fabricTags = [
-  { id: "pet-friendly", label: "Pet friendly" },
-  { id: "impermeavel", label: "Impermeável" },
-  { id: "premium", label: "Premium" },
-] satisfies { id: CatalogFabricTag; label: string }[];
+  { id: "pet-friendly", label: "Pet friendly", icon: "paw-print" },
+  { id: "impermeavel", label: "Impermeável", icon: "droplets" },
+  { id: "premium", label: "Premium", icon: "gem" },
+] satisfies CatalogFabricTagItem[];
 
 const catalogModels: CatalogModelItem[] = [
     {
@@ -52,7 +52,7 @@ const catalogFabrics: CatalogItem[] = [
       id: "linho-texturizado",
       name: "Linho texturizado",
       description:
-        "Tecido com trama aparente e toque natural, ideal para composicoes leves, acolhedoras e atemporais.",
+        "Tecido com trama aparente e toque natural, ideal para composições leves, acolhedoras e atemporais.",
       imageUrl: "/images/catalogo/tecidos/linho.webp",
       tags: ["pet-friendly", "premium"],
     },

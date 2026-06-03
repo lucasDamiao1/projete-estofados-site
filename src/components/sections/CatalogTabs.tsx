@@ -1,17 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { Droplets, Gem, PawPrint } from "lucide-react";
+import {
+  Droplets,
+  Feather,
+  Flame,
+  Gem,
+  Leaf,
+  PawPrint,
+  ShieldCheck,
+  Snowflake,
+  Sofa,
+  Sparkles,
+  Sun,
+  Waves,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { CatalogModelCard } from "@/components/sections/CatalogModelCard";
-import { fabricTags } from "@/data/catalog";
 import { cn } from "@/lib/utils";
-import type { CatalogFabricTag, CatalogItem, CatalogModelItem } from "@/types";
+import type {
+  CatalogFabricTag,
+  CatalogFabricTagItem,
+  CatalogItem,
+  CatalogModelItem,
+} from "@/types";
 
 type CatalogTab = "modelos" | "tecidos";
 
 type CatalogTabsProps = {
   fabrics: CatalogItem[];
+  fabricTags: CatalogFabricTagItem[];
   models: CatalogModelItem[];
 };
 
@@ -21,12 +39,25 @@ const tabs: { id: CatalogTab; label: string }[] = [
 ];
 
 const fabricTagIcons = {
-  "pet-friendly": PawPrint,
-  impermeavel: Droplets,
-  premium: Gem,
-} satisfies Record<CatalogFabricTag, typeof PawPrint>;
+  "paw-print": PawPrint,
+  droplets: Droplets,
+  gem: Gem,
+  "shield-check": ShieldCheck,
+  sparkles: Sparkles,
+  sofa: Sofa,
+  feather: Feather,
+  leaf: Leaf,
+  waves: Waves,
+  sun: Sun,
+  snowflake: Snowflake,
+  flame: Flame,
+};
 
-export function CatalogTabs({ fabrics, models }: CatalogTabsProps) {
+function getFabricTagIcon(icon: string) {
+  return fabricTagIcons[icon as keyof typeof fabricTagIcons] ?? Gem;
+}
+
+export function CatalogTabs({ fabrics, fabricTags, models }: CatalogTabsProps) {
   const [activeTab, setActiveTab] = useState<CatalogTab>("modelos");
   const [selectedFabricTags, setSelectedFabricTags] = useState<
     CatalogFabricTag[]
@@ -123,7 +154,7 @@ export function CatalogTabs({ fabrics, models }: CatalogTabsProps) {
                 </div>
               ) : (
                 <p className="rounded-lg bg-background p-6 text-center text-sm leading-7 text-muted shadow-soft">
-                  Nenhum modelo ativo no catalogo.
+                  Nenhum modelo ativo no catálogo.
                 </p>
               )
             ) : null}
@@ -135,7 +166,7 @@ export function CatalogTabs({ fabrics, models }: CatalogTabsProps) {
                   aria-label="Filtros de tecidos"
                 >
                   {fabricTags.map((tag) => {
-                    const Icon = fabricTagIcons[tag.id];
+                    const Icon = getFabricTagIcon(tag.icon);
                     const isSelected = selectedFabricTags.includes(tag.id);
 
                     return (
@@ -183,7 +214,7 @@ export function CatalogTabs({ fabrics, models }: CatalogTabsProps) {
                                 return null;
                               }
 
-                              const Icon = fabricTagIcons[tag.id];
+                              const Icon = getFabricTagIcon(tag.icon);
 
                               return (
                                 <span

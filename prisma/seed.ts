@@ -318,6 +318,27 @@ const catalogFabrics = [
   },
 ];
 
+const catalogFabricTags = [
+  {
+    id: "pet-friendly",
+    label: "Pet friendly",
+    icon: "paw-print",
+    sortOrder: 10,
+  },
+  {
+    id: "impermeavel",
+    label: "Impermeável",
+    icon: "droplets",
+    sortOrder: 20,
+  },
+  {
+    id: "premium",
+    label: "Premium",
+    icon: "gem",
+    sortOrder: 30,
+  },
+];
+
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
@@ -378,6 +399,22 @@ async function main() {
   );
 
   await Promise.all(
+    catalogFabricTags.map((tag) =>
+      prisma.catalogFabricTag.upsert({
+        where: {
+          id: tag.id,
+        },
+        update: {
+          label: tag.label,
+          icon: tag.icon,
+          sortOrder: tag.sortOrder,
+        },
+        create: tag,
+      }),
+    ),
+  );
+
+  await Promise.all(
     catalogFabrics.map((fabric) =>
       prisma.catalogFabric.upsert({
         where: {
@@ -400,6 +437,7 @@ async function main() {
   console.log(`Site content ready: ${siteContents.length} fields`);
   console.log(`Catalog models ready: ${catalogModels.length} items`);
   console.log(`Catalog fabrics ready: ${catalogFabrics.length} items`);
+  console.log(`Catalog fabric tags ready: ${catalogFabricTags.length} items`);
 }
 
 main()

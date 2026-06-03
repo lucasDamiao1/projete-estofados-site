@@ -56,6 +56,7 @@ export const ModelName = {
   MediaFile: 'MediaFile',
   CatalogModel: 'CatalogModel',
   CatalogFabric: 'CatalogFabric',
+  CatalogFabricTag: 'CatalogFabricTag',
   WhatsappClick: 'WhatsappClick'
 } as const
 
@@ -145,6 +146,18 @@ export const CatalogFabricScalarFieldEnum = {
 } as const
 
 export type CatalogFabricScalarFieldEnum = (typeof CatalogFabricScalarFieldEnum)[keyof typeof CatalogFabricScalarFieldEnum]
+
+
+export const CatalogFabricTagScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  icon: 'icon',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CatalogFabricTagScalarFieldEnum = (typeof CatalogFabricTagScalarFieldEnum)[keyof typeof CatalogFabricTagScalarFieldEnum]
 
 
 export const WhatsappClickScalarFieldEnum = {
