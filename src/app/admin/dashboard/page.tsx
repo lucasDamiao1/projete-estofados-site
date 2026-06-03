@@ -14,7 +14,14 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const [contents, catalogModels, catalogFabrics, catalogFabricTags, whatsappClickCount] =
+  const [
+    contents,
+    catalogModels,
+    catalogFabrics,
+    catalogFabricTags,
+    qrCodes,
+    whatsappClickCount,
+  ] =
     await Promise.all([
       prisma.siteContent.findMany({
         orderBy: [{ section: "asc" }, { key: "asc" }],
@@ -63,6 +70,14 @@ export default async function AdminDashboardPage() {
           sortOrder: true,
         },
       }),
+      prisma.qrCode.findMany({
+        orderBy: [{ createdAt: "asc" }, { name: "asc" }],
+        select: {
+          id: true,
+          name: true,
+          targetUrl: true,
+        },
+      }),
       prisma.whatsappClick.count(),
     ]);
 
@@ -72,6 +87,7 @@ export default async function AdminDashboardPage() {
       catalogFabricTags={catalogFabricTags}
       catalogModels={catalogModels}
       contents={contents}
+      qrCodes={qrCodes}
       whatsappClickCount={whatsappClickCount}
       userEmail={session.user.email}
     />

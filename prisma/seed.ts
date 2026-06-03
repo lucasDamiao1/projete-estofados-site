@@ -2,6 +2,7 @@ import { config as loadEnv } from "dotenv";
 import bcrypt from "bcrypt";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { brand } from "../src/constants/brand";
 
 loadEnv({ path: ".env.local" });
 loadEnv({ path: ".env" });
@@ -10,6 +11,7 @@ const connectionString = process.env.DATABASE_URL;
 const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
 const adminPassword = process.env.ADMIN_PASSWORD;
 const adminName = process.env.ADMIN_NAME?.trim() || "Administrador";
+const extraAdminUsers = process.env.EXTRA_ADMIN_USERS;
 
 if (!connectionString) {
   throw new Error("DATABASE_URL is required to seed the database.");
@@ -24,6 +26,47 @@ const seedAdmin = {
   password: adminPassword,
   name: adminName,
 };
+
+type SeedAdmin = {
+  email: string;
+  password: string;
+  name: string;
+};
+
+function parseExtraAdminUsers(value: string | undefined): SeedAdmin[] {
+  if (!value?.trim()) {
+    return [];
+  }
+
+  const parsed: unknown = JSON.parse(value);
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("EXTRA_ADMIN_USERS must be a JSON array.");
+  }
+
+  return parsed.map((user, index) => {
+    if (!user || typeof user !== "object") {
+      throw new Error(`EXTRA_ADMIN_USERS[${index}] must be an object.`);
+    }
+
+    const candidate = user as Record<string, unknown>;
+    const email = typeof candidate.email === "string" ? candidate.email.trim().toLowerCase() : "";
+    const password = typeof candidate.password === "string" ? candidate.password : "";
+    const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
+
+    if (!email || !password || !name) {
+      throw new Error(`EXTRA_ADMIN_USERS[${index}] requires email, password, and name.`);
+    }
+
+    return {
+      email,
+      password,
+      name,
+    };
+  });
+}
+
+const seedAdmins = [seedAdmin, ...parseExtraAdminUsers(extraAdminUsers)];
 
 const siteContents = [
   {
@@ -339,24 +382,47 @@ const catalogFabricTags = [
   },
 ];
 
+const defaultWhatsappMessage = encodeURIComponent(
+  "Olá, Projete Estofados! Gostaria de solicitar um orçamento para um sofá sob medida.",
+);
+
+const qrCodes = [
+  {
+    id: "whatsapp",
+    name: "WhatsApp",
+    targetUrl: `https://wa.me/${brand.whatsappNumber}?text=${defaultWhatsappMessage}`,
+    sortOrder: 10,
+  },
+  {
+    id: "instagram",
+    name: "Instagram",
+    targetUrl: "https://www.instagram.com/projeteestofados_/",
+    sortOrder: 20,
+  },
+];
+
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const password = await bcrypt.hash(seedAdmin.password, 12);
+  await Promise.all(
+    seedAdmins.map(async (admin) => {
+      const password = await bcrypt.hash(admin.password, 12);
 
-  await prisma.user.upsert({
-    where: { email: seedAdmin.email },
-    update: {
-      name: seedAdmin.name,
-      password,
-    },
-    create: {
-      name: seedAdmin.name,
-      email: seedAdmin.email,
-      password,
-    },
-  });
+      return prisma.user.upsert({
+        where: { email: admin.email },
+        update: {
+          name: admin.name,
+          password,
+        },
+        create: {
+          name: admin.name,
+          email: admin.email,
+          password,
+        },
+      });
+    }),
+  );
 
   await Promise.all(
     siteContents.map((content) =>
@@ -433,11 +499,28 @@ async function main() {
     ),
   );
 
-  console.log(`Admin user ready: ${seedAdmin.email}`);
+  await Promise.all(
+    qrCodes.map((qrCode) =>
+      prisma.qrCode.upsert({
+        where: {
+          id: qrCode.id,
+        },
+        update: {
+          name: qrCode.name,
+          targetUrl: qrCode.targetUrl,
+          sortOrder: qrCode.sortOrder,
+        },
+        create: qrCode,
+      }),
+    ),
+  );
+
+  console.log(`Admin users ready: ${seedAdmins.length}`);
   console.log(`Site content ready: ${siteContents.length} fields`);
   console.log(`Catalog models ready: ${catalogModels.length} items`);
   console.log(`Catalog fabrics ready: ${catalogFabrics.length} items`);
   console.log(`Catalog fabric tags ready: ${catalogFabricTags.length} items`);
+  console.log(`QR codes ready: ${qrCodes.length} items`);
 }
 
 main()

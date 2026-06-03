@@ -57,6 +57,7 @@ export const ModelName = {
   CatalogModel: 'CatalogModel',
   CatalogFabric: 'CatalogFabric',
   CatalogFabricTag: 'CatalogFabricTag',
+  QrCode: 'QrCode',
   WhatsappClick: 'WhatsappClick'
 } as const
 
@@ -158,6 +159,18 @@ export const CatalogFabricTagScalarFieldEnum = {
 } as const
 
 export type CatalogFabricTagScalarFieldEnum = (typeof CatalogFabricTagScalarFieldEnum)[keyof typeof CatalogFabricTagScalarFieldEnum]
+
+
+export const QrCodeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  targetUrl: 'targetUrl',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QrCodeScalarFieldEnum = (typeof QrCodeScalarFieldEnum)[keyof typeof QrCodeScalarFieldEnum]
 
 
 export const WhatsappClickScalarFieldEnum = {

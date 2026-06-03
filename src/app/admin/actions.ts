@@ -123,9 +123,25 @@ const catalogFabricTagIdSchema = z.object({
   id: z.string().trim().min(1, "Tag inválida.").max(80),
 });
 
+const qrCodeSchema = z.object({
+  id: optionalIdSchema,
+  name: z.string().trim().min(1, "Informe o nome do QR Code.").max(120),
+  targetUrl: z
+    .url("Informe uma URL válida para o QR Code.")
+    .max(1000, "A URL deve ter no máximo 1000 caracteres."),
+});
+
+const qrCodeIdSchema = z.object({
+  id: z.string().min(1, "QR Code inválido."),
+});
+
 function revalidateCatalogPaths() {
   revalidatePath("/admin/dashboard");
   revalidatePath("/catalogo");
+}
+
+function revalidateAdminDashboard() {
+  revalidatePath("/admin/dashboard");
 }
 
 function revalidateSiteContentPaths() {
@@ -865,4 +881,78 @@ export async function deleteCatalogFabricAction(formData: FormData) {
   });
 
   revalidateCatalogPaths();
+}
+
+export async function saveQrCodeAction(
+  _previousState: CatalogActionState,
+  formData: FormData,
+): Promise<CatalogActionState> {
+  const session = await auth();
+
+  if (!session?.user) {
+    return {
+      error: "Sessão expirada. Faça login novamente para salvar.",
+    };
+  }
+
+  const parsedData = qrCodeSchema.safeParse({
+    id: formData.get("id"),
+    name: formData.get("name"),
+    targetUrl: formData.get("targetUrl"),
+  });
+
+  if (!parsedData.success) {
+    return {
+      error: parsedData.error.issues[0]?.message ?? "Dados inválidos.",
+    };
+  }
+
+  const { id, ...data } = parsedData.data;
+
+  if (id) {
+    const updatedQrCode = await prisma.qrCode.updateMany({
+      where: { id },
+      data,
+    });
+
+    if (updatedQrCode.count === 0) {
+      return {
+        error: "QR Code não encontrado.",
+      };
+    }
+  } else {
+    await prisma.qrCode.create({
+      data,
+    });
+  }
+
+  revalidateAdminDashboard();
+
+  return {
+    success: id ? "QR Code atualizado com sucesso." : "QR Code criado com sucesso.",
+  };
+}
+
+export async function deleteQrCodeAction(formData: FormData) {
+  const session = await auth();
+
+  if (!session?.user) {
+    return;
+  }
+
+  const parsedData = qrCodeIdSchema.safeParse({
+    id: formData.get("id"),
+  });
+
+  if (!parsedData.success) {
+    return;
+  }
+
+  await prisma.qrCode.deleteMany({
+    where: {
+      id: parsedData.data.id,
+    },
+  });
+
+  revalidateAdminDashboard();
 }

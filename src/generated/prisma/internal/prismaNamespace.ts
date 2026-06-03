@@ -390,6 +390,7 @@ export const ModelName = {
   CatalogModel: 'CatalogModel',
   CatalogFabric: 'CatalogFabric',
   CatalogFabricTag: 'CatalogFabricTag',
+  QrCode: 'QrCode',
   WhatsappClick: 'WhatsappClick'
 } as const
 
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "siteContent" | "mediaFile" | "catalogModel" | "catalogFabric" | "catalogFabricTag" | "whatsappClick"
+    modelProps: "user" | "siteContent" | "mediaFile" | "catalogModel" | "catalogFabric" | "catalogFabricTag" | "qrCode" | "whatsappClick"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -854,6 +855,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    QrCode: {
+      payload: Prisma.$QrCodePayload<ExtArgs>
+      fields: Prisma.QrCodeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QrCodeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QrCodeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        findFirst: {
+          args: Prisma.QrCodeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QrCodeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        findMany: {
+          args: Prisma.QrCodeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>[]
+        }
+        create: {
+          args: Prisma.QrCodeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        createMany: {
+          args: Prisma.QrCodeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.QrCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>[]
+        }
+        delete: {
+          args: Prisma.QrCodeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        update: {
+          args: Prisma.QrCodeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        deleteMany: {
+          args: Prisma.QrCodeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QrCodeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.QrCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>[]
+        }
+        upsert: {
+          args: Prisma.QrCodeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QrCodePayload>
+        }
+        aggregate: {
+          args: Prisma.QrCodeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQrCode>
+        }
+        groupBy: {
+          args: Prisma.QrCodeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QrCodeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QrCodeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QrCodeCountAggregateOutputType> | number
+        }
+      }
+    }
     WhatsappClick: {
       payload: Prisma.$WhatsappClickPayload<ExtArgs>
       fields: Prisma.WhatsappClickFieldRefs
@@ -1049,6 +1124,18 @@ export const CatalogFabricTagScalarFieldEnum = {
 } as const
 
 export type CatalogFabricTagScalarFieldEnum = (typeof CatalogFabricTagScalarFieldEnum)[keyof typeof CatalogFabricTagScalarFieldEnum]
+
+
+export const QrCodeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  targetUrl: 'targetUrl',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QrCodeScalarFieldEnum = (typeof QrCodeScalarFieldEnum)[keyof typeof QrCodeScalarFieldEnum]
 
 
 export const WhatsappClickScalarFieldEnum = {
@@ -1269,6 +1356,7 @@ export type GlobalOmitConfig = {
   catalogModel?: Prisma.CatalogModelOmit
   catalogFabric?: Prisma.CatalogFabricOmit
   catalogFabricTag?: Prisma.CatalogFabricTagOmit
+  qrCode?: Prisma.QrCodeOmit
   whatsappClick?: Prisma.WhatsappClickOmit
 }
 

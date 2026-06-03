@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { QRCodeCanvas } from "qrcode.react";
 import {
   AlertTriangle,
   ChevronDown,
   Contact,
+  Download,
   Droplets,
   Feather,
   Flame,
@@ -20,6 +22,7 @@ import {
   PawPrint,
   Plus,
   Power,
+  QrCode as QrCodeIcon,
   Save,
   ScrollText,
   ShieldCheck,
@@ -34,7 +37,7 @@ import {
   Waves,
   X,
 } from "lucide-react";
-import type { ChangeEvent, ComponentType, ReactNode } from "react";
+import type { ChangeEvent, ComponentType, MouseEvent, ReactNode } from "react";
 import {
   useActionState,
   useCallback,
@@ -58,6 +61,8 @@ import {
   type UploadSiteContentImageState,
   createCatalogFabricTagAction,
   deleteCatalogFabricTagAction,
+  deleteQrCodeAction,
+  saveQrCodeAction,
 } from "../actions";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -70,7 +75,7 @@ type SiteSectionId =
   | "orcamento"
   | "contato";
 type CatalogSectionId = "modelos" | "tecidos";
-type AdminViewId = "dashboard" | SiteSectionId | CatalogSectionId;
+type AdminViewId = "dashboard" | SiteSectionId | CatalogSectionId | "qrcode";
 type PreviewMode = "desktop" | "tablet" | "mobile";
 type ContentPanelTab = "textos" | "imagens";
 type CatalogEditMode = "new" | `edit:${string}` | null;
@@ -114,6 +119,12 @@ export type EditableCatalogFabricTag = CatalogFabricTagItem & {
   sortOrder: number;
 };
 
+export type EditableQrCode = {
+  id: string;
+  name: string;
+  targetUrl: string;
+};
+
 type AdminSiteSection = {
   id: SiteSectionId;
   label: string;
@@ -143,6 +154,7 @@ type AdminEditorLayoutProps = {
   catalogFabricTags: EditableCatalogFabricTag[];
   catalogModels: EditableCatalogModel[];
   contents: EditableSiteContent[];
+  qrCodes: EditableQrCode[];
   userEmail?: string | null;
   whatsappClickCount: number;
 };
@@ -274,6 +286,7 @@ const labelClassName = "block space-y-1.5 text-sm font-medium text-foreground";
 const initialSaveState: SaveSiteContentState = {};
 const initialUploadState: UploadSiteContentImageState = {};
 const initialCatalogState: CatalogActionState = {};
+const qrCodeLogoSrc = "/images/icon-cropped.png";
 const previewMessageType = "admin-site-preview:update";
 
 function isSiteSectionId(viewId: AdminViewId): viewId is SiteSectionId {
@@ -750,7 +763,9 @@ function ConfirmationModal({
           <div
             className={cn(
               "inline-flex size-11 shrink-0 items-center justify-center rounded-md",
-              isDanger ? "bg-accent/10 text-accent" : "bg-primary/10 text-primary"
+              isDanger
+                ? "bg-accent/10 text-accent"
+                : "bg-primary/10 text-primary"
             )}
           >
             <AlertTriangle aria-hidden="true" className="size-5" />
@@ -1133,7 +1148,9 @@ function CatalogFabricForm({
         {selectedTags.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {selectedTags.map((tagId) => {
-              const tag = fabricTags.find((fabricTag) => fabricTag.id === tagId);
+              const tag = fabricTags.find(
+                (fabricTag) => fabricTag.id === tagId
+              );
 
               if (!tag) {
                 return null;
@@ -1363,6 +1380,156 @@ function CatalogFabricTagsManager({
   );
 }
 
+function QrCodeForm({
+  onDirtyChange,
+  qrCode,
+}: {
+  onDirtyChange: (isDirty: boolean) => void;
+  qrCode?: EditableQrCode;
+}) {
+  const [state, formAction, isPending] = useActionState(
+    saveQrCodeAction,
+    initialCatalogState
+  );
+  const isEditing = Boolean(qrCode);
+
+  useEffect(() => {
+    if (state.success) {
+      onDirtyChange(false);
+    }
+  }, [onDirtyChange, state.success]);
+
+  return (
+    <form
+      action={formAction}
+      className="space-y-3"
+      onChange={() => onDirtyChange(true)}
+    >
+      <input name="id" type="hidden" value={qrCode?.id ?? ""} />
+
+      <label className={labelClassName}>
+        Nome
+        <input
+          className={inputClassName}
+          defaultValue={qrCode?.name}
+          name="name"
+          required
+        />
+      </label>
+
+      <label className={labelClassName}>
+        URL de destino
+        <textarea
+          className={textareaClassName}
+          defaultValue={qrCode?.targetUrl}
+          name="targetUrl"
+          required
+        />
+      </label>
+
+      <CatalogFeedback state={state} />
+
+      <Button className="w-full" disabled={isPending} type="submit">
+        <Save aria-hidden="true" className="size-4" />
+        {isPending
+          ? "Salvando..."
+          : isEditing
+          ? "Salvar QR Code"
+          : "Criar QR Code"}
+      </Button>
+    </form>
+  );
+}
+
+function QrCodeDeleteAction({ id, name }: { id: string; name: string }) {
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+  return (
+    <>
+      <Button
+        className="w-full text-accent"
+        onClick={() => setIsConfirmingDelete(true)}
+        type="button"
+        variant="secondary"
+      >
+        <Trash2 aria-hidden="true" className="size-4" />
+        Remover
+      </Button>
+
+      {isConfirmingDelete ? (
+        <ConfirmationModal
+          confirmLabel="Excluir QR Code"
+          description="Esta ação remove o QR Code apenas da área administrativa."
+          formAction={deleteQrCodeAction}
+          hiddenFields={{ id }}
+          onClose={() => setIsConfirmingDelete(false)}
+          title={`Deseja excluir ${name}?`}
+          tone="danger"
+        />
+      ) : null}
+    </>
+  );
+}
+
+function QrCodeManager({
+  editMode,
+  onCreateNew,
+  onDirtyChange,
+  selectedQrCode,
+}: {
+  editMode: CatalogEditMode;
+  onCreateNew: () => void;
+  onDirtyChange: (isDirty: boolean) => void;
+  selectedQrCode: EditableQrCode | null;
+}) {
+  return (
+    <div className="space-y-4">
+      <Button
+        className="w-full"
+        onClick={onCreateNew}
+        type="button"
+        variant="secondary"
+      >
+        <Plus aria-hidden="true" className="size-4" />
+        Novo QR Code
+      </Button>
+
+      {editMode === "new" ? (
+        <div className="space-y-4 rounded-md border border-primary/10 bg-white p-3">
+          <div>
+            <p className="text-sm font-semibold text-primary">Novo QR Code</p>
+            <p className="mt-1 text-xs leading-5 text-muted">
+              Defina o nome e o destino para criar o QR.
+            </p>
+          </div>
+          <QrCodeForm key="new-qrcode" onDirtyChange={onDirtyChange} />
+        </div>
+      ) : selectedQrCode ? (
+        <div className="space-y-4 rounded-md border border-primary/10 bg-white p-3">
+          <div>
+            <p className="text-sm font-semibold text-primary">
+              Editando {selectedQrCode.name}
+            </p>
+          </div>
+          <QrCodeForm
+            key={selectedQrCode.id}
+            onDirtyChange={onDirtyChange}
+            qrCode={selectedQrCode}
+          />
+          <QrCodeDeleteAction
+            id={selectedQrCode.id}
+            name={selectedQrCode.name}
+          />
+        </div>
+      ) : (
+        <div className="rounded-md border border-primary/10 bg-white p-4 text-sm leading-6 text-muted">
+          Selecione um QR Code na listagem central para editar os campos.
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CatalogActions({
   active,
   deleteAction,
@@ -1445,12 +1612,14 @@ function DashboardHome({
   catalogFabricsCount,
   catalogModelsCount,
   onNavigate,
+  qrCodesCount,
   userEmail,
   whatsappClickCount,
 }: {
   catalogFabricsCount: number;
   catalogModelsCount: number;
   onNavigate: (viewId: AdminViewId) => void;
+  qrCodesCount: number;
   userEmail?: string | null;
   whatsappClickCount: number;
 }) {
@@ -1464,6 +1633,11 @@ function DashboardHome({
       label: "Itens no catálogo",
       value: catalogModelsCount + catalogFabricsCount,
       icon: Sofa,
+    },
+    {
+      label: "QR Codes",
+      value: qrCodesCount,
+      icon: QrCodeIcon,
     },
   ];
 
@@ -1484,7 +1658,7 @@ function DashboardHome({
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         {summaryCards.map((card) => {
           const Icon = card.icon;
 
@@ -1526,6 +1700,15 @@ function DashboardHome({
           <Sofa aria-hidden="true" className="size-4" />
           Ver catálogo
         </Button>
+        <Button
+          className="justify-start"
+          onClick={() => onNavigate("qrcode")}
+          type="button"
+          variant="secondary"
+        >
+          <QrCodeIcon aria-hidden="true" className="size-4" />
+          Ver QR Codes
+        </Button>
       </div>
     </section>
   );
@@ -1534,10 +1717,12 @@ function DashboardHome({
 function DashboardSidePanel({
   catalogFabricsCount,
   catalogModelsCount,
+  qrCodesCount,
   whatsappClickCount,
 }: {
   catalogFabricsCount: number;
   catalogModelsCount: number;
+  qrCodesCount: number;
   whatsappClickCount: number;
 }) {
   return (
@@ -1552,6 +1737,10 @@ function DashboardSidePanel({
           <div className="flex justify-between gap-3">
             <dt>Tecidos</dt>
             <dd className="font-medium text-primary">{catalogFabricsCount}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt>QR Codes</dt>
+            <dd className="font-medium text-primary">{qrCodesCount}</dd>
           </div>
           <div className="flex justify-between gap-3">
             <dt>WhatsApp</dt>
@@ -1872,6 +2061,93 @@ function CatalogFabricPreviewCard({
   );
 }
 
+function QrCodePreviewCard({
+  isSelected,
+  onSelect,
+  qrCode,
+}: {
+  isSelected: boolean;
+  onSelect: () => void;
+  qrCode: EditableQrCode;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  function handleDownload(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
+    const canvas = canvasRef.current;
+
+    if (!canvas) {
+      return;
+    }
+
+    const link = document.createElement("a");
+    const fileName = qrCode.name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    link.download = `${fileName || "qrcode"}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
+  return (
+    <article
+      aria-pressed={isSelected}
+      className={cn(
+        "cursor-pointer overflow-hidden rounded-lg border bg-background text-left shadow-soft transition",
+        isSelected
+          ? "border-primary ring-2 ring-primary/10"
+          : "border-primary/10 hover:border-accent/40"
+      )}
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      <div className="flex min-h-14 items-center justify-between gap-3 border-b border-primary/10 px-4 py-2.5">
+        <h3 className="truncate text-sm font-semibold text-primary">
+          {qrCode.name}
+        </h3>
+        <button
+          aria-label={`Baixar QR Code ${qrCode.name}`}
+          className="inline-flex size-9 shrink-0 items-center justify-center bg-background text-primary shadow-soft transition hover:border-accent/40 hover:text-accent"
+          onClick={handleDownload}
+          type="button"
+        >
+          <Download aria-hidden="true" className="size-4" />
+        </button>
+      </div>
+
+      <div className="flex aspect-square items-center justify-center bg-white p-1">
+        <QRCodeCanvas
+          bgColor="#ffffff"
+          className="aspect-square size-full max-h-[20rem] max-w-[20rem]"
+          fgColor="#1e1a17"
+          imageSettings={{
+            excavate: true,
+            height: 56,
+            src: qrCodeLogoSrc,
+            width: 56,
+          }}
+          level="H"
+          marginSize={2}
+          ref={canvasRef}
+          size={320}
+          value={qrCode.targetUrl}
+        />
+      </div>
+    </article>
+  );
+}
+
 function CatalogModelsWorkspace({
   models,
   onSelect,
@@ -1908,6 +2184,48 @@ function CatalogModelsWorkspace({
       ) : (
         <div className="rounded-lg border border-primary/10 bg-white p-6 text-sm leading-7 text-muted shadow-soft">
           Nenhum modelo cadastrado.
+        </div>
+      )}
+    </section>
+  );
+}
+
+function QrCodesWorkspace({
+  onSelect,
+  qrCodes,
+  selectedQrCodeId,
+}: {
+  onSelect: (id: string) => void;
+  qrCodes: EditableQrCode[];
+  selectedQrCodeId: string | null;
+}) {
+  return (
+    <section className="space-y-4">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          Admin
+        </p>
+        <h2 className="font-serif text-3xl text-primary">QR Code</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+          Selecione um QR para editar os dados no painel lateral. O download da
+          imagem fica disponível no próprio card.
+        </p>
+      </div>
+
+      {qrCodes.length > 0 ? (
+        <div className="grid gap-6 md:grid-cols-2">
+          {qrCodes.map((qrCode) => (
+            <QrCodePreviewCard
+              isSelected={qrCode.id === selectedQrCodeId}
+              key={qrCode.id}
+              onSelect={() => onSelect(qrCode.id)}
+              qrCode={qrCode}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-lg border border-primary/10 bg-white p-6 text-sm leading-7 text-muted shadow-soft">
+          Nenhum QR Code cadastrado.
         </div>
       )}
     </section>
@@ -2105,7 +2423,9 @@ function CatalogFabricManager({
           {editMode === "new" ? (
             <div className="space-y-4 rounded-md border border-primary/10 bg-white p-3">
               <div>
-                <p className="text-sm font-semibold text-primary">Novo tecido</p>
+                <p className="text-sm font-semibold text-primary">
+                  Novo tecido
+                </p>
                 <p className="mt-1 text-xs leading-5 text-muted">
                   Selecione as tags e salve para criar o card.
                 </p>
@@ -2156,6 +2476,7 @@ export function AdminEditorLayout({
   catalogFabricTags,
   catalogModels,
   contents,
+  qrCodes,
   userEmail,
   whatsappClickCount,
 }: AdminEditorLayoutProps) {
@@ -2164,8 +2485,10 @@ export function AdminEditorLayout({
   const [previewMode, setPreviewMode] = useState<PreviewMode>("desktop");
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
   const [selectedFabricId, setSelectedFabricId] = useState<string | null>(null);
+  const [selectedQrCodeId, setSelectedQrCodeId] = useState<string | null>(null);
   const [modelEditMode, setModelEditMode] = useState<CatalogEditMode>(null);
   const [fabricEditMode, setFabricEditMode] = useState<CatalogEditMode>(null);
+  const [qrCodeEditMode, setQrCodeEditMode] = useState<CatalogEditMode>(null);
   const [fabricPanelTab, setFabricPanelTab] =
     useState<FabricPanelTab>("tecido");
   const [isCreatingFabricTag, setIsCreatingFabricTag] = useState(false);
@@ -2279,11 +2602,24 @@ export function AdminEditorLayout({
       setSelectedFabricId(null);
       setIsCreatingFabricTag(true);
     });
-  }, [
-    clearCatalogDirtyState,
-    isCreatingFabricTag,
-    runOrConfirmCatalogDiscard,
-  ]);
+  }, [clearCatalogDirtyState, isCreatingFabricTag, runOrConfirmCatalogDiscard]);
+
+  const handleQrCodeEditModeChange = useCallback(
+    (editMode: CatalogEditMode) => {
+      if (qrCodeEditMode === editMode) {
+        return;
+      }
+
+      runOrConfirmCatalogDiscard(() => {
+        clearCatalogDirtyState();
+        setQrCodeEditMode(editMode);
+        setSelectedQrCodeId(
+          editMode?.startsWith("edit:") ? editMode.replace("edit:", "") : null
+        );
+      });
+    },
+    [clearCatalogDirtyState, qrCodeEditMode, runOrConfirmCatalogDiscard]
+  );
 
   const handleSiteContentDraftChange = useCallback(
     (content: EditableSiteContent, value: string) => {
@@ -2333,6 +2669,8 @@ export function AdminEditorLayout({
     catalogModels.find((model) => model.id === selectedModelId) ?? null;
   const selectedFabric =
     catalogFabrics.find((fabric) => fabric.id === selectedFabricId) ?? null;
+  const selectedQrCode =
+    qrCodes.find((qrCode) => qrCode.id === selectedQrCodeId) ?? null;
 
   const rightPanelTitle = selectedSiteSection
     ? selectedSiteSection.label
@@ -2340,6 +2678,8 @@ export function AdminEditorLayout({
     ? "Modelos"
     : selectedViewId === "tecidos"
     ? "Tecidos"
+    : selectedViewId === "qrcode"
+    ? "QR Code"
     : "Resumo";
 
   return (
@@ -2399,6 +2739,15 @@ export function AdminEditorLayout({
                   onClick={() => handleViewChange("tecidos")}
                 />
               </SidebarGroup>
+
+              <SidebarGroup label="Ferramentas">
+                <SidebarButton
+                  icon={QrCodeIcon}
+                  isSelected={selectedViewId === "qrcode"}
+                  label="QR Code"
+                  onClick={() => handleViewChange("qrcode")}
+                />
+              </SidebarGroup>
             </nav>
 
             <form
@@ -2419,6 +2768,7 @@ export function AdminEditorLayout({
               catalogFabricsCount={catalogFabrics.length}
               catalogModelsCount={catalogModels.length}
               onNavigate={handleViewChange}
+              qrCodesCount={qrCodes.length}
               userEmail={userEmail}
               whatsappClickCount={whatsappClickCount}
             />
@@ -2449,6 +2799,14 @@ export function AdminEditorLayout({
               selectedFabricId={selectedFabricId}
             />
           ) : null}
+
+          {selectedViewId === "qrcode" ? (
+            <QrCodesWorkspace
+              onSelect={(id) => handleQrCodeEditModeChange(`edit:${id}`)}
+              qrCodes={qrCodes}
+              selectedQrCodeId={selectedQrCodeId}
+            />
+          ) : null}
         </section>
 
         <aside className="min-h-0 border-t border-primary/10 bg-surface/25 lg:h-full lg:overflow-y-auto lg:border-l lg:border-t-0">
@@ -2465,6 +2823,8 @@ export function AdminEditorLayout({
                   ? "Edite textos e imagens salvos no banco para esta seção."
                   : selectedViewId === "modelos" || selectedViewId === "tecidos"
                   ? "Edite o item selecionado ou crie um novo registro."
+                  : selectedViewId === "qrcode"
+                  ? "Edite o QR selecionado ou crie um novo destino."
                   : "Resumo e preparação das próximas métricas."}
               </p>
             </div>
@@ -2473,6 +2833,7 @@ export function AdminEditorLayout({
               <DashboardSidePanel
                 catalogFabricsCount={catalogFabrics.length}
                 catalogModelsCount={catalogModels.length}
+                qrCodesCount={qrCodes.length}
                 whatsappClickCount={whatsappClickCount}
               />
             ) : null}
@@ -2507,6 +2868,15 @@ export function AdminEditorLayout({
                 onTagCreateNew={handleFabricTagCreateNew}
                 panelTab={fabricPanelTab}
                 selectedFabric={selectedFabric}
+              />
+            ) : null}
+
+            {selectedViewId === "qrcode" ? (
+              <QrCodeManager
+                editMode={qrCodeEditMode}
+                onCreateNew={() => handleQrCodeEditModeChange("new")}
+                onDirtyChange={setCatalogFormDirty}
+                selectedQrCode={selectedQrCode}
               />
             ) : null}
           </div>

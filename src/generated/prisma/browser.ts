@@ -48,6 +48,11 @@ export type CatalogFabric = Prisma.CatalogFabricModel
  */
 export type CatalogFabricTag = Prisma.CatalogFabricTagModel
 /**
+ * Model QrCode
+ * 
+ */
+export type QrCode = Prisma.QrCodeModel
+/**
  * Model WhatsappClick
  * 
  */
