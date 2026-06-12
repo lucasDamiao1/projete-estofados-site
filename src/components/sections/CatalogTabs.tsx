@@ -1,22 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import {
-  Droplets,
-  Feather,
-  Flame,
-  Gem,
-  Leaf,
-  PawPrint,
-  ShieldCheck,
-  Snowflake,
-  Sofa,
-  Sparkles,
-  Sun,
-  Waves,
-} from "lucide-react";
 import { useEffect, useState } from "react";
 import { CatalogModelCard } from "@/components/sections/CatalogModelCard";
+import { CatalogQuoteModal } from "@/components/sections/CatalogQuoteModal";
+import { brand } from "@/constants/brand";
+import { getFabricTagIcon } from "@/lib/catalogFabricIcons";
 import { cn } from "@/lib/utils";
 import type {
   CatalogFabricTag,
@@ -38,30 +27,13 @@ const tabs: { id: CatalogTab; label: string }[] = [
   { id: "tecidos", label: "Tecidos" },
 ];
 
-const fabricTagIcons = {
-  "paw-print": PawPrint,
-  droplets: Droplets,
-  gem: Gem,
-  "shield-check": ShieldCheck,
-  sparkles: Sparkles,
-  sofa: Sofa,
-  feather: Feather,
-  leaf: Leaf,
-  waves: Waves,
-  sun: Sun,
-  snowflake: Snowflake,
-  flame: Flame,
-};
-
-function getFabricTagIcon(icon: string) {
-  return fabricTagIcons[icon as keyof typeof fabricTagIcons] ?? Gem;
-}
-
 export function CatalogTabs({ fabrics, fabricTags, models }: CatalogTabsProps) {
   const [activeTab, setActiveTab] = useState<CatalogTab>("modelos");
   const [selectedFabricTags, setSelectedFabricTags] = useState<
     CatalogFabricTag[]
   >([]);
+  const [selectedModel, setSelectedModel] =
+    useState<CatalogModelItem | null>(null);
 
   const filteredFabrics =
     selectedFabricTags.length === 0
@@ -149,7 +121,11 @@ export function CatalogTabs({ fabrics, fabricTags, models }: CatalogTabsProps) {
               models.length > 0 ? (
                 <div className="grid gap-6 lg:grid-cols-2">
                   {models.map((model) => (
-                    <CatalogModelCard key={model.id} model={model} />
+                    <CatalogModelCard
+                      key={model.id}
+                      model={model}
+                      onQuoteClick={setSelectedModel}
+                    />
                   ))}
                 </div>
               ) : (
@@ -249,6 +225,17 @@ export function CatalogTabs({ fabrics, fabricTags, models }: CatalogTabsProps) {
           </div>
         );
       })}
+
+      {selectedModel ? (
+        <CatalogQuoteModal
+          key={selectedModel.id}
+          fabricTags={fabricTags}
+          fabrics={fabrics}
+          model={selectedModel}
+          onClose={() => setSelectedModel(null)}
+          whatsappNumber={brand.whatsappNumber}
+        />
+      ) : null}
     </div>
   );
 }

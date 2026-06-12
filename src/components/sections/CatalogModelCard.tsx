@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { WhatsAppIcon } from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/Button";
-import { brand } from "@/constants/brand";
 import type { CatalogModelItem } from "@/types";
 
 type CatalogModelCardProps = {
   model: CatalogModelItem;
+  onQuoteClick: (model: CatalogModelItem) => void;
 };
 
 const modelDetails = [
@@ -15,11 +15,10 @@ const modelDetails = [
   ["structure", "Estrutura"],
 ] as const;
 
-export function CatalogModelCard({ model }: CatalogModelCardProps) {
-  const whatsappHref = `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(
-    model.whatsappMessage,
-  )}`;
-
+export function CatalogModelCard({
+  model,
+  onQuoteClick,
+}: CatalogModelCardProps) {
   return (
     <article className="overflow-hidden rounded-lg bg-background shadow-soft md:grid md:grid-cols-[3fr_2fr]">
       <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-[240px]">
@@ -54,16 +53,15 @@ export function CatalogModelCard({ model }: CatalogModelCardProps) {
         </dl>
 
         <div className="mt-5">
-          <Button asChild variant="primary" size="sm">
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Solicitar orçamento para ${model.name}`}
-            >
-              <WhatsAppIcon className="size-4" />
-              Solicitar orçamento
-            </a>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            aria-label={`Montar orçamento para ${model.name}`}
+            onClick={() => onQuoteClick(model)}
+          >
+            <WhatsAppIcon className="size-4" />
+            Montar orçamento
           </Button>
         </div>
       </div>
