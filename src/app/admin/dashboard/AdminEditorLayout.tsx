@@ -65,6 +65,7 @@ import {
   saveQrCodeAction,
 } from "../actions";
 import { Button } from "@/components/ui/Button";
+import { CatalogModelVisualCard } from "@/components/sections/CatalogModelVisualCard";
 import { cn } from "@/lib/utils";
 import type { CatalogFabricTag, CatalogFabricTagItem } from "@/types";
 
@@ -1903,76 +1904,15 @@ function CatalogModelPreviewCard({
   model: EditableCatalogModel;
   onSelect: () => void;
 }) {
-  const modelDetails = [
-    ["size", "Tamanho"],
-    ["fabric", "Tecido"],
-    ["armSize", "Braço"],
-    ["structure", "Estrutura"],
-  ] as const;
-
   return (
-    <article
-      aria-pressed={isSelected}
-      className={cn(
-        "cursor-pointer overflow-hidden rounded-lg border bg-background text-left shadow-soft transition md:grid md:grid-cols-[3fr_2fr]",
-        isSelected
-          ? "border-primary ring-2 ring-primary/10"
-          : "border-primary/10 hover:border-accent/40"
-      )}
+    <CatalogModelVisualCard
+      actionHint="Clique para editar este modelo"
+      ariaLabel={`Editar modelo ${model.name}`}
+      isSelected={isSelected}
+      model={model}
       onClick={onSelect}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          onSelect();
-        }
-      }}
-      role="button"
-      tabIndex={0}
-    >
-      <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-[220px]">
-        <Image
-          alt={model.name}
-          className="object-cover"
-          fill
-          sizes="(min-width: 1024px) 28vw, (min-width: 768px) 54vw, 100vw"
-          src={model.imageUrl}
-        />
-      </div>
-
-      <div className="flex flex-col justify-center p-4 sm:p-5">
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-[0.68rem] font-medium uppercase tracking-[0.2em] text-accent">
-            {model.category}
-          </p>
-          <span
-            className={cn(
-              "rounded-md border px-2 py-1 text-[0.62rem] font-medium uppercase tracking-[0.12em]",
-              model.active
-                ? "border-primary/15 text-primary"
-                : "border-accent/25 text-accent"
-            )}
-          >
-            {model.active ? "Ativo" : "Inativo"}
-          </span>
-        </div>
-        <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight text-primary">
-          {model.name}
-        </h2>
-
-        <dl className="mt-4 grid gap-2 sm:grid-cols-2">
-          {modelDetails.map(([key, label]) => (
-            <div className="border-t border-primary/10 pt-2" key={key}>
-              <dt className="text-[0.64rem] font-medium uppercase tracking-[0.14em] text-muted">
-                {label}
-              </dt>
-              <dd className="mt-0.5 text-sm font-medium text-primary">
-                {model[key]}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </article>
+      statusLabel={model.active ? "Ativo" : "Inativo"}
+    />
   );
 }
 
@@ -2171,7 +2111,7 @@ function CatalogModelsWorkspace({
       </div>
 
       {models.length > 0 ? (
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {models.map((model) => (
             <CatalogModelPreviewCard
               isSelected={model.id === selectedModelId}

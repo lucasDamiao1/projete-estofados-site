@@ -119,7 +119,7 @@ export function CatalogTabs({ fabrics, fabricTags, models }: CatalogTabsProps) {
           >
             {isActive && tab.id === "modelos" ? (
               models.length > 0 ? (
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                   {models.map((model) => (
                     <CatalogModelCard
                       key={model.id}
