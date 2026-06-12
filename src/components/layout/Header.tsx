@@ -20,27 +20,17 @@ export function Header() {
         <div className="flex items-center justify-between gap-5">
           <Link
             href="/#inicio"
-            className="flex shrink-0 items-center gap-1"
+            className="relative block h-9 w-[172px] shrink-0 sm:h-11 sm:w-[210px]"
             aria-label={`${brand.name} - ir para o início`}
           >
-            <span className="relative block size-10 overflow-hidden rounded-full bg-primary/8 sm:size-11">
-              <Image
-                src="/images/icon-cropped.png"
-                alt=""
-                fill
-                priority
-                sizes="44px"
-                className="object-contain"
-              />
-            </span>
-            <span className="flex items-baseline gap-2">
-              <span className="font-serif text-2xl font-semibold leading-none tracking-normal text-primary">
-                Projete
-              </span>
-              <span className="font-sans text-[0.62rem] font-medium uppercase tracking-[0.22em] text-accent">
-                Estofados
-              </span>
-            </span>
+            <Image
+              src="/images/logo-navbar.png"
+              alt=""
+              fill
+              priority
+              sizes="(min-width: 640px) 210px, 172px"
+              className="object-contain"
+            />
           </Link>
 
           <nav
